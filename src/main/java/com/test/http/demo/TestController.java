@@ -31,6 +31,7 @@ public class TestController {
             @ApiResponse(responseCode = "400", description = "Invalid ID", content = @Content),
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
+    
     @GetMapping(value = "/test")
     public List<Post> getTestData(
             @Parameter(description = "trace-id") @RequestHeader(value = "Trace-Id", required = false) String traceId) {
