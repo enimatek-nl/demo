@@ -28,7 +28,8 @@ public class OAuth2Config {
             @Value("${spring.security.oauth2.client.registration.my-auth.scope}") String scope,
             @Value("${spring.security.oauth2.client.registration.my-auth.authorization-grant-type}") String authorizationGrantType) {
 
-        var client_secret = secretClient.getSecret("my-secret").getValue();
+        //var client_secret = secretClient.getSecret("my-secret").getValue();
+        var client_secret = "";
 
         return ClientRegistration
                 .withRegistrationId("my-auth")
