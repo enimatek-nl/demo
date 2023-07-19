@@ -52,7 +52,7 @@ public class TestController {
     }
 
     @Async
-    public CompletableFuture<List<Post>> GetPostsAsync() {
+    private CompletableFuture<List<Post>> GetPostsAsync() {
         var results = placeHolderClient.getPosts();
         return CompletableFuture.completedFuture(results);
     }
