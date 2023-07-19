@@ -35,7 +35,7 @@ public class FeignClientConfiguration {
             }
 
             // oauth impl. spring security
-            requestTemplate.header(HttpHeaders.AUTHORIZATION, oauth2Provider.getAuthenticationToken(AUTH_SERVER_NAME));
+            // requestTemplate.header(HttpHeaders.AUTHORIZATION, oauth2Provider.getAuthenticationToken(AUTH_SERVER_NAME));
         };
     }
 
