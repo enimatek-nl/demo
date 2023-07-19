@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,11 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class TestController {
 
-    private final JSONPlaceHolderClient placeHolderClient;
-
-    public TestController(JSONPlaceHolderClient placeHolderClient) {
-        this.placeHolderClient = placeHolderClient;
-    }
+    @Autowired
+    private AsyncService asyncService;
 
     @Operation(summary = "test api", description = "test api", tags = { "test" })
     @ApiResponses(value = {
@@ -41,20 +39,17 @@ public class TestController {
     public List<Post> getTestData(
             @Parameter(description = "trace-id") @RequestHeader(value = "Trace-Id", required = false) String traceId) {
 
-        var users = GetPostsAsync();
-        CompletableFuture.allOf(users).join();
-
+        log.info("start async");
         try {
-            return users.get();
+            var users1 = asyncService.getPostsAsync();
+            var users2 = asyncService.getPostsAsync();
+            var users3 = asyncService.getPostsAsync();
+            CompletableFuture.allOf(users1, users2, users3).join();
+            log.info("ready");
+            return users1.get();
         } catch (InterruptedException | ExecutionException e) {
             return null;
         }
-    }
-
-    @Async
-    private CompletableFuture<List<Post>> GetPostsAsync() {
-        var results = placeHolderClient.getPosts();
-        return CompletableFuture.completedFuture(results);
     }
 
 }
